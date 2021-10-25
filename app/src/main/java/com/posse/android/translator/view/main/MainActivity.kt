@@ -9,31 +9,39 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.getSystemService
 import androidx.core.widget.doOnTextChanged
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.posse.android.translator.R
 import com.posse.android.translator.databinding.ActivityMainBinding
 import com.posse.android.translator.model.data.AppState
 import com.posse.android.translator.model.data.DataModel
-import com.posse.android.translator.presenter.Presenter
-import com.posse.android.translator.utils.AndroidNetworkStatus
+import com.posse.android.translator.rx.ISchedulerProvider
 import com.posse.android.translator.utils.NetworkStatus
 import com.posse.android.translator.view.base.View
 import com.posse.android.translator.view.main.adapter.MainAdapter
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.schedulers.Schedulers
+import dagger.android.AndroidInjection
 import java.util.*
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
-
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), View {
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    @Inject
+    lateinit var schedulerProvider: ISchedulerProvider
+
+    @Inject
+    lateinit var networkStatus: NetworkStatus
+
     private lateinit var binding: ActivityMainBinding
 
-    private lateinit var presenter: Presenter<AppState, View>
-
-    private lateinit var networkStatus: NetworkStatus
+    private val model: MainViewModel by lazy {
+        viewModelFactory.create(MainViewModel::class.java)
+    }
 
     private var isOnline = true
 
@@ -47,13 +55,13 @@ class MainActivity : AppCompatActivity(), View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AndroidInjection.inject(this)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        presenter = MainPresenterImpl()
-        networkStatus = AndroidNetworkStatus(this)
+        model.getStateLiveData().observe(this) { renderData(it) }
         networkStatus
             .isOnline()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(schedulerProvider.io)
+            .observeOn(schedulerProvider.ui)
             .subscribe { isOnline ->
                 this.isOnline = isOnline
                 if (isOnline) {
@@ -73,7 +81,7 @@ class MainActivity : AppCompatActivity(), View {
                 getSystemService<InputMethodManager>()
                     ?.hideSoftInputFromWindow(binding.searchField.windowToken, 0)
                 binding.searchField.clearFocus()
-                presenter.getData(binding.searchField.editText?.text.toString(), isOnline)
+                model.getWordDescriptions(binding.searchField.editText?.text.toString(), isOnline)
             }
         }
         var scheduler: ScheduledFuture<*>? = null
@@ -166,15 +174,5 @@ class MainActivity : AppCompatActivity(), View {
                 binding.errorLayout.visibility = GONE
             }
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        presenter.attachView(this)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        presenter.detachView(this)
     }
 }

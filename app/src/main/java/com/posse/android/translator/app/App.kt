@@ -1,26 +1,28 @@
 package com.posse.android.translator.app
 
 import android.app.Application
-import androidx.room.Room
-import com.posse.android.translator.model.datasource.db.WordsDatabase
+import com.posse.android.translator.di.AppModule
+import com.posse.android.translator.di.DaggerAppComponent
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasAndroidInjector
+import javax.inject.Inject
 
-class App : Application() {
+class App : Application(), HasAndroidInjector {
+
+    @Inject
+    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
+
+    override fun androidInjector(): AndroidInjector<Any> {
+        return dispatchingAndroidInjector
+    }
 
     override fun onCreate() {
         super.onCreate()
-        instance = this
-
-        db = Room.databaseBuilder(this, WordsDatabase::class.java, DB_NAME)
-            .fallbackToDestructiveMigration()
+        DaggerAppComponent.builder()
+            .application(this)
+            .appModule(AppModule(this))
             .build()
-    }
-
-    companion object {
-
-        private const val DB_NAME = "database.db"
-
-        lateinit var instance: App
-
-        lateinit var db: WordsDatabase
+            .inject(this)
     }
 }
