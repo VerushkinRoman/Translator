@@ -5,46 +5,33 @@ import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkRequest
 import androidx.core.content.getSystemService
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.core.Single
-import io.reactivex.rxjava3.subjects.BehaviorSubject
-import javax.inject.Inject
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 
-class AndroidNetworkStatus @Inject constructor(context: Context) : NetworkStatus {
+class AndroidNetworkStatus(context: Context) : NetworkStatus {
 
-    private val statusSubject: BehaviorSubject<Boolean> = BehaviorSubject.create()
+    private val networkStatus: MutableLiveData<Boolean> = MutableLiveData()
 
     init {
-        statusSubject.onNext(false)
-
+        networkStatus.value = false
         val connectivityManager = context.getSystemService<ConnectivityManager>()
         val request = NetworkRequest.Builder().build()
         connectivityManager?.registerNetworkCallback(
             request,
             object : ConnectivityManager.NetworkCallback() {
                 override fun onAvailable(network: Network) {
-                    statusSubject.onNext(true)
+                    networkStatus.postValue(true)
                 }
 
                 override fun onUnavailable() {
-                    statusSubject.onNext(false)
-                }
-
-                override fun onLosing(network: Network, maxMsToLive: Int) {
-                    statusSubject.onNext(false)
+                    networkStatus.postValue(false)
                 }
 
                 override fun onLost(network: Network) {
-                    statusSubject.onNext(false)
+                    networkStatus.postValue(false)
                 }
             })
     }
 
-    override fun isOnline(): Observable<Boolean> {
-        return statusSubject
-    }
-
-    override fun isOnlineSingle(): Single<Boolean> {
-        return statusSubject.first(false)
-    }
+    override fun getStatus(): LiveData<Boolean> = networkStatus
 }
