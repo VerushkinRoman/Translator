@@ -4,6 +4,8 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Desktop/Android/Translator2/app/src/main/res/layout/activity_main.xml" value="0.2558876811594203" />
+        <entry key="..\:/Desktop/Android/Translator2/app/src/main/res/layout/activity_main_recyclerview_item.xml" value="0.24954710144927536" />
+        <entry key="..\:/Desktop/Android/Translator2/app/src/main/res/layout/search_dialog_fragment.xml" value="0.2558876811594203" />
       </map>
     </option>
   </component>
