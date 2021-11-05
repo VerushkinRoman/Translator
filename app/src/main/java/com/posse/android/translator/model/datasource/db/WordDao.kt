@@ -36,5 +36,5 @@ interface WordDao {
     fun getAll(): List<RoomDataModel>
 
     @Query("SELECT * FROM RoomDataModel WHERE word = :word")
-    fun getByWord(word: String): List<RoomDataModel>?
+    fun getByWord(word: String): List<RoomDataModel>
 }

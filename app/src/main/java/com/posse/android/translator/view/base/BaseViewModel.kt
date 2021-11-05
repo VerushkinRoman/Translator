@@ -4,17 +4,24 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.posse.android.translator.model.data.AppState
-import io.reactivex.rxjava3.disposables.CompositeDisposable
+import kotlinx.coroutines.*
 
 abstract class BaseViewModel<T : AppState>(
     protected val stateLiveData: MutableLiveData<T> = MutableLiveData()
 ) : ViewModel() {
 
-    protected val compositeDisposable = CompositeDisposable()
+    protected val viewModelCoroutineScope = CoroutineScope(
+        Dispatchers.Main
+                + SupervisorJob()
+                + CoroutineExceptionHandler { _, throwable ->
+            handleError(throwable)
+        })
 
     fun getStateLiveData(): LiveData<T> = stateLiveData
 
     override fun onCleared() {
-        compositeDisposable.clear()
+        viewModelCoroutineScope.coroutineContext.cancelChildren()
     }
+
+    abstract fun handleError(error: Throwable)
 }
