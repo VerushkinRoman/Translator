@@ -1,8 +1,11 @@
 package com.posse.android.translator.model.data
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
-class Meanings(
-    @field:SerializedName("translation") val translation: Translation?,
-    @field:SerializedName("imageUrl") val imageUrl: String?
-)
+@Parcelize
+data class Meanings(
+    @SerializedName("translation") val translation: Translation?,
+    @SerializedName("imageUrl") val imageUrl: String?
+) : Parcelable

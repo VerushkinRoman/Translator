@@ -1,6 +1,8 @@
 package com.posse.android.translator.view.main
 
 import com.posse.android.translator.model.data.AppState
+import com.posse.android.translator.model.datasource.RoomDataBaseImplementation.Companion.HISTORY
+import com.posse.android.translator.presenter.MainInteractor
 import com.posse.android.translator.view.base.BaseViewModel
 import kotlinx.coroutines.launch
 

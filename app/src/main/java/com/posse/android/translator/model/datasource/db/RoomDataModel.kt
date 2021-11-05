@@ -7,5 +7,7 @@ import androidx.room.PrimaryKey
 data class RoomDataModel(
 
     @PrimaryKey val word: String,
-    val meaning: String?
+    val meaning: String?,
+    var timestamp: Long,
+    val imageUrl: String?
 )
