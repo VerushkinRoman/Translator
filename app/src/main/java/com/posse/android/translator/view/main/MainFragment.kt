@@ -1,68 +1,75 @@
 package com.posse.android.translator.view.main
 
 import android.os.Bundle
-import android.view.View.GONE
-import android.view.View.VISIBLE
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.getSystemService
 import androidx.core.widget.doOnTextChanged
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.fragment.app.Fragment
 import com.posse.android.translator.R
-import com.posse.android.translator.databinding.ActivityMainBinding
+import com.posse.android.translator.databinding.MainScreenLayoutBinding
 import com.posse.android.translator.model.data.AppState
 import com.posse.android.translator.model.data.DataModel
 import com.posse.android.translator.utils.NetworkStatus
-import com.posse.android.translator.view.base.View
+import com.posse.android.translator.view.dialog.DescriptionFragment
 import com.posse.android.translator.view.main.adapter.MainAdapter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.*
+import org.koin.core.component.KoinComponent
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
 
-class MainActivity : AppCompatActivity(), View {
-
-    private val networkStatus: NetworkStatus by inject()
-
-    private lateinit var binding: ActivityMainBinding
+class MainFragment : Fragment(), KoinComponent, com.posse.android.translator.view.base.View {
 
     private val model: MainViewModel by viewModel()
+    private val networkStatus: NetworkStatus by inject()
 
-    private var isOnline = true
+    private var _binding: MainScreenLayoutBinding? = null
+    private val binding get() = _binding!!
 
-    private var adapter: MainAdapter? = null
     private val onListItemClickListener: MainAdapter.OnListItemClickListener =
         object : MainAdapter.OnListItemClickListener {
             override fun onItemClick(data: DataModel) {
-                Toast.makeText(this@MainActivity, data.text, Toast.LENGTH_SHORT).show()
+                DescriptionFragment.newInstance(data).show(childFragmentManager,null)
             }
         }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        model.getStateLiveData().observe(this) { renderData(it) }
-        networkStatus.getStatus().observe(this) { isOnline ->
-            this.isOnline = isOnline
-            if (isOnline) {
-                binding.offlineStatus.visibility = GONE
-            } else {
-                binding.offlineStatus.visibility = VISIBLE
-            }
-        }
-        setContentView(binding.root)
+    private val adapter: MainAdapter by lazy { MainAdapter(onListItemClickListener, listOf()) }
+
+    private var isOnline = true
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = MainScreenLayoutBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        model.getStateLiveData().observe(viewLifecycleOwner) { renderData(it) }
+        setupOnlineStatus()
         setupSearchField()
+        binding.mainRecyclerview.adapter = adapter
     }
 
     private fun setupSearchField() {
         val executor = Executors.newSingleThreadScheduledExecutor()
         val search = Runnable {
-            runOnUiThread {
-                getSystemService<InputMethodManager>()
+            CoroutineScope(Dispatchers.Main + SupervisorJob()).launch {
+                activity?.getSystemService<InputMethodManager>()
                     ?.hideSoftInputFromWindow(binding.searchField.windowToken, 0)
                 binding.searchField.clearFocus()
                 model.getWordDescriptions(binding.searchField.editText?.text.toString(), isOnline)
@@ -88,7 +95,7 @@ class MainActivity : AppCompatActivity(), View {
         }
 
         binding.searchField.editText?.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 val text = binding.searchField.editText?.text?.toString() ?: ""
                 if (!text.contains(" ") && text.isNotEmpty()) {
                     scheduler?.cancel(true)
@@ -115,15 +122,7 @@ class MainActivity : AppCompatActivity(), View {
                     showErrorScreen(getString(R.string.empty_response))
                 } else {
                     changeView(appState)
-                    if (adapter == null) {
-                        adapter = MainAdapter(onListItemClickListener, dataModel)
-                        binding.mainRecyclerview.layoutManager =
-                            LinearLayoutManager(applicationContext)
-                        binding.mainRecyclerview.adapter =
-                            adapter
-                    } else {
-                        adapter!!.setData(dataModel)
-                    }
+                    adapter.setData(dataModel)
                 }
             }
             is AppState.Loading -> {
@@ -143,20 +142,37 @@ class MainActivity : AppCompatActivity(), View {
     private fun changeView(state: AppState) {
         when (state) {
             is AppState.Error -> {
-                binding.mainRecyclerview.visibility = GONE
-                binding.loadingLayout.visibility = GONE
-                binding.errorLayout.visibility = VISIBLE
+                binding.mainRecyclerview.visibility = View.GONE
+                binding.loadingLayout.visibility = View.GONE
+                binding.errorLayout.visibility = View.VISIBLE
             }
             is AppState.Loading -> {
-                binding.mainRecyclerview.visibility = GONE
-                binding.loadingLayout.visibility = VISIBLE
-                binding.errorLayout.visibility = GONE
+                binding.mainRecyclerview.visibility = View.GONE
+                binding.loadingLayout.visibility = View.VISIBLE
+                binding.errorLayout.visibility = View.GONE
             }
             is AppState.Success -> {
-                binding.mainRecyclerview.visibility = VISIBLE
-                binding.loadingLayout.visibility = GONE
-                binding.errorLayout.visibility = GONE
+                binding.mainRecyclerview.visibility = View.VISIBLE
+                binding.loadingLayout.visibility = View.GONE
+                binding.errorLayout.visibility = View.GONE
             }
         }
+    }
+
+    private fun setupOnlineStatus() {
+        CoroutineScope(Dispatchers.IO + SupervisorJob()).launch {
+            networkStatus.getStatus().collect { onlineStatus ->
+                isOnline = onlineStatus
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        _binding = null
+        super.onDestroy()
+    }
+
+    companion object {
+        fun newInstance(): MainFragment = MainFragment()
     }
 }

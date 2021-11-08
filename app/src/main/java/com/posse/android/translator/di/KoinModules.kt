@@ -1,6 +1,7 @@
 package com.posse.android.translator.di
 
 import androidx.room.Room
+import coil.ImageLoader
 import com.posse.android.translator.model.data.DataModel
 import com.posse.android.translator.model.datasource.ApiService
 import com.posse.android.translator.model.datasource.DataSource
@@ -9,9 +10,9 @@ import com.posse.android.translator.model.datasource.RoomDataBaseImplementation
 import com.posse.android.translator.model.datasource.db.WordsDatabase
 import com.posse.android.translator.model.repository.Repository
 import com.posse.android.translator.model.repository.RepositoryImplementation
+import com.posse.android.translator.presenter.MainInteractor
 import com.posse.android.translator.utils.AndroidNetworkStatus
 import com.posse.android.translator.utils.NetworkStatus
-import com.posse.android.translator.view.main.MainInteractor
 import com.posse.android.translator.view.main.MainViewModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -63,6 +64,14 @@ val database = module {
     single<WordsDatabase> {
         Room.databaseBuilder(androidContext(), WordsDatabase::class.java, DB_NAME)
             .fallbackToDestructiveMigration()
+            .build()
+    }
+}
+
+val coil = module {
+    single<ImageLoader> {
+        ImageLoader.Builder(androidContext())
+            .crossfade(true)
             .build()
     }
 }

@@ -12,7 +12,12 @@ class RoomDataBaseImplementation(private val db: WordsDatabase) :
 
     override suspend fun getData(word: String): List<DataModel> {
         return withContext(Dispatchers.IO) {
-            db.wordDao.getByWord(word.lowercase()).map {
+            if (word == HISTORY) db.wordDao.getAll()
+                .filter { it.timestamp > 0 }
+                .sortedByDescending { it.timestamp }
+                .map {
+                convertRoomModelToDataModel(it)
+            } else db.wordDao.getByWord(word.lowercase()).map {
                 convertRoomModelToDataModel(it)
             }
         }
@@ -21,8 +26,14 @@ class RoomDataBaseImplementation(private val db: WordsDatabase) :
     override suspend fun saveData(dataSet: List<DataModel>) {
         withContext(Dispatchers.IO) {
             dataSet.forEach {
-                db.wordDao.insert(convertDataModelToRoomModel(it))
+                val data = convertDataModelToRoomModel(it)
+                if (it == dataSet[0]) data.timestamp = System.currentTimeMillis()
+                db.wordDao.insert(data)
             }
         }
+    }
+
+    companion object {
+        const val HISTORY = "Get history"
     }
 }

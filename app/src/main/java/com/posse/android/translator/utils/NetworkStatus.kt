@@ -1,7 +1,7 @@
 package com.posse.android.translator.utils
 
-import androidx.lifecycle.LiveData
+import kotlinx.coroutines.flow.StateFlow
 
 interface NetworkStatus {
-    fun getStatus(): LiveData<Boolean>
+    fun getStatus(): StateFlow<Boolean>
 }
