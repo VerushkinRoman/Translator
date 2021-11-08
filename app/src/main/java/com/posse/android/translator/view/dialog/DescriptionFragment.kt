@@ -5,14 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.view.inputmethod.InputMethodManager
-import androidx.core.content.getSystemService
 import androidx.fragment.app.DialogFragment
 import coil.ImageLoader
 import coil.request.Disposable
 import coil.request.ImageRequest
+import com.posse.android.models.DataModel
 import com.posse.android.translator.databinding.DescriptionDialogLayoutBinding
-import com.posse.android.translator.model.data.DataModel
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 

@@ -1,8 +1,8 @@
 package com.posse.android.translator.presenter
 
+import com.posse.android.models.DataModel
 import com.posse.android.translator.model.data.AppState
-import com.posse.android.translator.model.data.DataModel
-import com.posse.android.translator.model.repository.Repository
+import com.posse.android.data.repository.Repository
 
 class MainInteractor(
     private val remoteRepository: Repository<List<DataModel>>,

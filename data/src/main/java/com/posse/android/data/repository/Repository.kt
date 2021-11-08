@@ -1,8 +1,7 @@
-package com.posse.android.translator.model.datasource
+package com.posse.android.data.repository
 
-interface DataSource<T> {
+interface Repository<T> {
 
     suspend fun getData(word: String): T
-
     suspend fun saveData(dataSet: T)
 }

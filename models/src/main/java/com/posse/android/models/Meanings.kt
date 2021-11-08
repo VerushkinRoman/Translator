@@ -1,4 +1,4 @@
-package com.posse.android.translator.model.data
+package com.posse.android.models
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName

@@ -1,6 +1,6 @@
-package com.posse.android.translator.model.datasource
+package com.posse.android.data.datasource
 
-import com.posse.android.translator.model.data.DataModel
+import com.posse.android.models.DataModel
 
 class RetrofitImplementation(private val apiService: ApiService) :
     DataSource<List<DataModel>> {

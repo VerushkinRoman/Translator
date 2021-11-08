@@ -1,9 +1,9 @@
-package com.posse.android.translator.model.datasource
+package com.posse.android.data.datasource
 
-import com.posse.android.translator.model.data.DataModel
-import com.posse.android.translator.model.datasource.db.WordsDatabase
-import com.posse.android.translator.utils.convertDataModelToRoomModel
-import com.posse.android.translator.utils.convertRoomModelToDataModel
+import com.posse.android.models.DataModel
+import com.posse.android.data.datasource.db.WordsDatabase
+import com.posse.android.data.convertDataModelToRoomModel
+import com.posse.android.data.convertRoomModelToDataModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

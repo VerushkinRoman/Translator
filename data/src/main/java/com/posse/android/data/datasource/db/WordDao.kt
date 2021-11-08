@@ -1,4 +1,4 @@
-package com.posse.android.translator.model.datasource.db
+package com.posse.android.data.datasource.db
 
 import androidx.room.*
 

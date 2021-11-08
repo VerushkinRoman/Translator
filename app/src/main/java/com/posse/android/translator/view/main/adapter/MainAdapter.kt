@@ -1,10 +1,11 @@
 package com.posse.android.translator.view.main.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.posse.android.models.DataModel
 import com.posse.android.translator.databinding.ActivityMainRecyclerviewItemBinding
-import com.posse.android.translator.model.data.DataModel
 
 class MainAdapter(
     private var onListItemClickListener: OnListItemClickListener,
@@ -12,6 +13,7 @@ class MainAdapter(
 ) :
     RecyclerView.Adapter<MainAdapter.RecyclerItemViewHolder>() {
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setData(data: List<DataModel>) {
         this.data = data
         notifyDataSetChanged()

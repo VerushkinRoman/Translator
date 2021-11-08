@@ -4,13 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.posse.android.models.DataModel
 import com.posse.android.translator.R
 import com.posse.android.translator.databinding.MainScreenLayoutBinding
 import com.posse.android.translator.model.data.AppState
-import com.posse.android.translator.model.data.DataModel
-import com.posse.android.translator.model.datasource.RoomDataBaseImplementation.Companion.HISTORY
+import com.posse.android.data.datasource.RoomDataBaseImplementation.Companion.HISTORY
 import com.posse.android.translator.view.dialog.DescriptionFragment
 import com.posse.android.translator.view.main.MainViewModel
 import com.posse.android.translator.view.main.adapter.MainAdapter

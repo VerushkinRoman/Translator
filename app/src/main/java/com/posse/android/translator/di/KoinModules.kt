@@ -2,14 +2,14 @@ package com.posse.android.translator.di
 
 import androidx.room.Room
 import coil.ImageLoader
-import com.posse.android.translator.model.data.DataModel
-import com.posse.android.translator.model.datasource.ApiService
-import com.posse.android.translator.model.datasource.DataSource
-import com.posse.android.translator.model.datasource.RetrofitImplementation
-import com.posse.android.translator.model.datasource.RoomDataBaseImplementation
-import com.posse.android.translator.model.datasource.db.WordsDatabase
-import com.posse.android.translator.model.repository.Repository
-import com.posse.android.translator.model.repository.RepositoryImplementation
+import com.posse.android.models.DataModel
+import com.posse.android.data.datasource.ApiService
+import com.posse.android.data.datasource.DataSource
+import com.posse.android.data.datasource.RetrofitImplementation
+import com.posse.android.data.datasource.RoomDataBaseImplementation
+import com.posse.android.data.datasource.db.WordsDatabase
+import com.posse.android.data.repository.Repository
+import com.posse.android.data.repository.RepositoryImplementation
 import com.posse.android.translator.presenter.MainInteractor
 import com.posse.android.translator.utils.AndroidNetworkStatus
 import com.posse.android.translator.utils.NetworkStatus

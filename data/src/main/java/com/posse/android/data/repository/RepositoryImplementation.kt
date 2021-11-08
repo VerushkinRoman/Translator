@@ -1,7 +1,7 @@
-package com.posse.android.translator.model.repository
+package com.posse.android.data.repository
 
-import com.posse.android.translator.model.data.DataModel
-import com.posse.android.translator.model.datasource.DataSource
+import com.posse.android.models.DataModel
+import com.posse.android.data.datasource.DataSource
 
 class RepositoryImplementation(private val dataSource: DataSource<List<DataModel>>) :
     Repository<List<DataModel>> {

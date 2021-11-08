@@ -6,14 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.core.content.getSystemService
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import com.posse.android.models.DataModel
 import com.posse.android.translator.R
 import com.posse.android.translator.databinding.MainScreenLayoutBinding
 import com.posse.android.translator.model.data.AppState
-import com.posse.android.translator.model.data.DataModel
 import com.posse.android.translator.utils.NetworkStatus
 import com.posse.android.translator.view.dialog.DescriptionFragment
 import com.posse.android.translator.view.main.adapter.MainAdapter
