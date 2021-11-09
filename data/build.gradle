@@ -8,8 +8,6 @@ dependencies {
 
     implementation project(Modules.models)
 
-    implementation Android.core
-
     implementation Coroutines.core
     implementation Coroutines.android
 

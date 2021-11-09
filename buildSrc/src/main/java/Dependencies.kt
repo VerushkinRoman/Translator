@@ -10,6 +10,12 @@ object Config {
 object Modules {
     const val models = ":models"
     const val data = ":data"
+    const val network = ":network"
+    const val base = ":base"
+    const val description = ":description"
+    const val adapter = ":adapter"
+    const val history = ":history"
+    const val main = ":main"
 }
 
 object Versions {

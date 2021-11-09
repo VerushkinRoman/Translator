@@ -36,6 +36,11 @@ subprojects {
                     sourceCompatibility Config.javaVersion
                     targetCompatibility Config.javaVersion
                 }
+
+                dependencies {
+
+                    implementation Android.core
+                }
             }
         }
     }

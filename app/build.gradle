@@ -27,8 +27,12 @@ android {
 
 dependencies {
 
-    implementation project(Modules.models)
     implementation project(Modules.data)
+    implementation project(Modules.models)
+    implementation project(Modules.base)
+    implementation project(Modules.network)
+    implementation project(Modules.history)
+    implementation project(Modules.main)
 
     implementation Coroutines.core
     implementation Coroutines.android
@@ -46,7 +50,6 @@ dependencies {
 
     implementation Coil.core
 
-    implementation Android.core
     implementation Android.appCompat
     implementation Android.material
     implementation Android.constraint

@@ -6,6 +6,5 @@ plugins {
 
 dependencies {
 
-    implementation Android.core
     implementation Retrofit.converterGson
 }

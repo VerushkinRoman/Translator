@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="empty_response">Empty server response</string>
+    <string name="enter_a_word_to_translate">Enter a word to translate</string>
+    <string name="error">Error</string>
+</resources>

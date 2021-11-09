@@ -11,11 +11,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import com.posse.android.history.HistoryFragment
+import com.posse.android.main.MainFragment
+import com.posse.android.network.NetworkStatus
 import com.posse.android.translator.R
 import com.posse.android.translator.databinding.ActivityMainBinding
-import com.posse.android.translator.utils.NetworkStatus
-import com.posse.android.translator.view.history.HistoryFragment
-import com.posse.android.translator.view.main.MainFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
