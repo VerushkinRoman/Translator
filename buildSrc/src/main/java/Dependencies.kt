@@ -37,6 +37,8 @@ object Versions {
     const val jUnit = "4.12"
     const val testJUnit = "1.1.3"
     const val espresso = "3.4.0"
+
+    const val binding = "1.5.0-beta01"
 }
 
 object Android {
@@ -74,4 +76,8 @@ object Koin {
 
 object Coil {
     const val core = "io.coil-kt:coil:${Versions.coil}"
+}
+
+object BindingDelegate{
+    const val core = "com.github.kirich1409:viewbindingpropertydelegate-noreflection:${Versions.binding}"
 }

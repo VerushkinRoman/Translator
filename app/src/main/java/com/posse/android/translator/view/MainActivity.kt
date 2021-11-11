@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.posse.android.history.HistoryFragment
 import com.posse.android.main.MainFragment
 import com.posse.android.network.NetworkStatus
@@ -24,11 +25,11 @@ import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import kotlin.system.exitProcess
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     private val networkStatus: NetworkStatus by inject()
 
-    private val binding: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
+    private val binding: ActivityMainBinding by viewBinding(ActivityMainBinding::bind)
 
     private var isBackShown = false
 

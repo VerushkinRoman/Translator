@@ -1,41 +1,33 @@
 package com.posse.android.base
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.posse.android.adapter.MainAdapter
 import com.posse.android.base.databinding.MainScreenLayoutBinding
 import com.posse.android.description.DescriptionFragment
 import com.posse.android.models.AppState
 import com.posse.android.models.DataModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.android.ext.android.getKoin
+import org.koin.core.qualifier.named
 
-abstract class BaseFragment : Fragment(), com.posse.android.base.View {
+abstract class BaseFragment : Fragment(R.layout.main_screen_layout), com.posse.android.base.View {
 
-    protected val model: MainViewModel by viewModel()
+    private val scope = getKoin().getOrCreateScope("MainFragment", named("MainScope"))
+
+    protected val model: MainViewModel by scope.inject()
 
     private val adapter: MainAdapter by lazy { MainAdapter(onListItemClickListener, listOf()) }
 
-    private var _binding: MainScreenLayoutBinding? = null
-    protected val binding get() = _binding!!
+    protected val binding by viewBinding(MainScreenLayoutBinding::bind)
 
-    protected val onListItemClickListener: MainAdapter.OnListItemClickListener =
+    private val onListItemClickListener: MainAdapter.OnListItemClickListener =
         object : MainAdapter.OnListItemClickListener {
             override fun onItemClick(data: DataModel) {
                 DescriptionFragment.newInstance(data).show(childFragmentManager, null)
             }
         }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = MainScreenLayoutBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -92,7 +84,7 @@ abstract class BaseFragment : Fragment(), com.posse.android.base.View {
     }
 
     override fun onDestroy() {
-        _binding = null
+        scope.close()
         super.onDestroy()
     }
 }

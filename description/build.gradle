@@ -16,4 +16,6 @@ dependencies {
     implementation Koin.compat
 
     implementation Coil.core
+
+    implementation BindingDelegate.core
 }

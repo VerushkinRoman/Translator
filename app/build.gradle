@@ -50,6 +50,8 @@ dependencies {
 
     implementation Coil.core
 
+    implementation BindingDelegate.core
+
     implementation Android.appCompat
     implementation Android.material
     implementation Android.constraint

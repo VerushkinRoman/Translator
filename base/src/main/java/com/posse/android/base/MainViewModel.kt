@@ -1,11 +1,11 @@
 package com.posse.android.base
 
-import com.posse.android.data.MainInteractor
+import com.posse.android.data.Interactor
 import com.posse.android.models.AppState
 import kotlinx.coroutines.launch
 
 class MainViewModel(
-    private val interactor: MainInteractor
+    private val interactor: Interactor<AppState>
 ) : BaseViewModel<AppState>() {
 
     fun getWordDescriptions(word: String, isOnline: Boolean) {

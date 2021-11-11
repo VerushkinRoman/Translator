@@ -3,6 +3,7 @@ package com.posse.android.translator.di
 import androidx.room.Room
 import coil.ImageLoader
 import com.posse.android.base.MainViewModel
+import com.posse.android.data.Interactor
 import com.posse.android.data.MainInteractor
 import com.posse.android.data.datasource.ApiService
 import com.posse.android.data.datasource.DataSource
@@ -11,12 +12,14 @@ import com.posse.android.data.datasource.RoomDataBaseImplementation
 import com.posse.android.data.datasource.db.WordsDatabase
 import com.posse.android.data.repository.Repository
 import com.posse.android.data.repository.RepositoryImplementation
+import com.posse.android.models.AppState
 import com.posse.android.models.DataModel
 import com.posse.android.network.AndroidNetworkStatus
 import com.posse.android.network.NetworkStatus
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -36,8 +39,16 @@ val application = module {
 }
 
 val mainScreen = module {
-    factory { MainInteractor(get(named(NAME_REMOTE)), get(named(NAME_LOCAL))) }
-    factory { MainViewModel(get()) }
+    scope(named("MainScope")) {
+        factory<Interactor<AppState>> {
+            MainInteractor(
+                get(named(NAME_REMOTE)),
+                get(named(NAME_LOCAL))
+            )
+        }
+        viewModel { MainViewModel(get()) }
+    }
+
 }
 
 val network = module {

@@ -20,4 +20,6 @@ dependencies {
     implementation Koin.core
     implementation Koin.android
     implementation Koin.compat
+
+    implementation BindingDelegate.core
 }
