@@ -2,18 +2,18 @@ package com.posse.android.translator.di
 
 import androidx.room.Room
 import coil.ImageLoader
-import com.posse.android.translator.model.data.DataModel
-import com.posse.android.translator.model.datasource.ApiService
-import com.posse.android.translator.model.datasource.DataSource
-import com.posse.android.translator.model.datasource.RetrofitImplementation
-import com.posse.android.translator.model.datasource.RoomDataBaseImplementation
-import com.posse.android.translator.model.datasource.db.WordsDatabase
-import com.posse.android.translator.model.repository.Repository
-import com.posse.android.translator.model.repository.RepositoryImplementation
-import com.posse.android.translator.presenter.MainInteractor
-import com.posse.android.translator.utils.AndroidNetworkStatus
-import com.posse.android.translator.utils.NetworkStatus
-import com.posse.android.translator.view.main.MainViewModel
+import com.posse.android.base.MainViewModel
+import com.posse.android.data.MainInteractor
+import com.posse.android.data.datasource.ApiService
+import com.posse.android.data.datasource.DataSource
+import com.posse.android.data.datasource.RetrofitImplementation
+import com.posse.android.data.datasource.RoomDataBaseImplementation
+import com.posse.android.data.datasource.db.WordsDatabase
+import com.posse.android.data.repository.Repository
+import com.posse.android.data.repository.RepositoryImplementation
+import com.posse.android.models.DataModel
+import com.posse.android.network.AndroidNetworkStatus
+import com.posse.android.network.NetworkStatus
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
@@ -41,7 +41,11 @@ val mainScreen = module {
 }
 
 val network = module {
-    single<NetworkStatus> { AndroidNetworkStatus(androidContext()) }
+    single<NetworkStatus> {
+        AndroidNetworkStatus(
+            androidContext()
+        )
+    }
 
     single<ApiService> { get<Retrofit>().create(ApiService::class.java) }
 

@@ -1,0 +1,23 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+}
+
+dependencies {
+
+    implementation project(Modules.data)
+    implementation project(Modules.models)
+    implementation project(Modules.description)
+    implementation project(Modules.adapter)
+
+    implementation Android.appCompat
+    implementation Android.material
+    implementation Android.constraint
+
+    implementation Coroutines.core
+    implementation Coroutines.android
+
+    implementation Koin.core
+    implementation Koin.android
+    implementation Koin.compat
+}
