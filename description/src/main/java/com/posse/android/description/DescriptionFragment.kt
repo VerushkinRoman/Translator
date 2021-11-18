@@ -1,11 +1,11 @@
 package com.posse.android.description
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.TextView
 import androidx.fragment.app.DialogFragment
+import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.ImageLoader
 import coil.request.Disposable
 import coil.request.ImageRequest
@@ -14,25 +14,15 @@ import com.posse.android.models.DataModel
 import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
 
-class DescriptionFragment : DialogFragment(), KoinComponent {
+class DescriptionFragment : DialogFragment(R.layout.description_dialog_layout), KoinComponent {
 
-    private var _binding: DescriptionDialogLayoutBinding? = null
-    private val binding get() = _binding!!
+    private val binding by viewBinding(DescriptionDialogLayoutBinding::bind)
 
     private val imageLoader: ImageLoader by inject()
 
     private var disposable: Disposable? = null
 
     private val data: DataModel? by lazy { arguments?.getParcelable(KEY_DATA) }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = DescriptionDialogLayoutBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -41,8 +31,14 @@ class DescriptionFragment : DialogFragment(), KoinComponent {
             height = WindowManager.LayoutParams.MATCH_PARENT
         }
 
-        binding.header.text = data?.text
-        binding.description.text = data?.meanings?.get(0)?.translation?.translation
+        with(binding) {
+            header changeTextTo data?.text
+            description changeTextTo data?.meanings?.get(0)?.translation?.translation
+
+            closeBtn.setOnClickListener {
+                dismiss()
+            }
+        }
 
         disposable = imageLoader.enqueue(
             ImageRequest.Builder(this.requireContext())
@@ -52,14 +48,10 @@ class DescriptionFragment : DialogFragment(), KoinComponent {
                 .build()
         )
 
-        binding.closeBtn.setOnClickListener {
-            dismiss()
-        }
     }
 
     override fun onDestroy() {
         disposable?.dispose()
-        _binding = null
         super.onDestroy()
     }
 
@@ -72,5 +64,9 @@ class DescriptionFragment : DialogFragment(), KoinComponent {
         }
 
         private const val KEY_DATA = "data"
+    }
+
+    private infix fun TextView.changeTextTo(newText: String?) {
+        this.text = newText
     }
 }
