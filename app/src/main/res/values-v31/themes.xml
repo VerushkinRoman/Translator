@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.Translator" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <item name="android:windowSplashScreenBackground">@android:color/holo_green_light</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@android:drawable/star_big_on</item>
+        <item name="android:windowSplashScreenIconBackgroundColor">@android:color/darker_gray</item>
+        <item name="android:windowSplashScreenBrandingImage">@android:drawable/stat_sys_headset</item>
+    </style>
+</resources>
