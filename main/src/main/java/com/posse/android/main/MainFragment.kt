@@ -61,8 +61,8 @@ class MainFragment : BaseFragment(), KoinComponent {
 
         binding.searchField.editText?.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                val text = binding.searchField.editText?.text?.toString() ?: ""
-                if (!text.contains(" ") && text.isNotEmpty()) {
+                val text = binding.searchField.editText?.text?.toString().orEmpty()
+                if (checkValidText(text)) {
                     scheduler?.cancel(true)
                     search.run()
                     return@setOnEditorActionListener true
@@ -89,5 +89,7 @@ class MainFragment : BaseFragment(), KoinComponent {
 
     companion object {
         fun newInstance(): MainFragment = MainFragment()
+
+        fun checkValidText(text: String) = !text.contains(" ") && text.isNotEmpty()
     }
 }

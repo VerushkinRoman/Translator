@@ -8,4 +8,7 @@ dependencies {
     implementation project(Modules.models)
 
     implementation Android.material
+
+    testImplementation Android.jUnit
+    androidTestImplementation Android.testJUnit
 }

@@ -17,4 +17,7 @@ dependencies {
 
     implementation Coroutines.core
     implementation Coroutines.android
+
+    testImplementation Android.jUnit
+    androidTestImplementation Android.testJUnit
 }
