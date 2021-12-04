@@ -15,4 +15,7 @@ dependencies {
 
     implementation Room.runtime
     kapt Room.compiler
+
+    testImplementation Android.jUnit
+    androidTestImplementation Android.testJUnit
 }
