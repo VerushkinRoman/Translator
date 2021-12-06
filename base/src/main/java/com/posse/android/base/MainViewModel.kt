@@ -9,17 +9,9 @@ class MainViewModel(
 ) : BaseViewModel<AppState>() {
 
     fun getWordDescriptions(word: String, isOnline: Boolean) {
-        try {
-            viewModelCoroutineScope.launch {
-                try {
-                    val data = interactor.getData(word, isOnline)
-                    stateLiveData.value = data
-                } catch (error: Throwable) {
-                    handleError(error)
-                }
-            }
-        } catch (error: Throwable) {
-            handleError(error)
+        viewModelCoroutineScope.launch {
+            val data = interactor.getData(word, isOnline)
+            stateLiveData.value = data
         }
     }
 
