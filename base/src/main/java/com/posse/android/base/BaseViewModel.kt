@@ -10,12 +10,7 @@ abstract class BaseViewModel<T : AppState>(
     protected val stateLiveData: MutableLiveData<T> = MutableLiveData()
 ) : ViewModel() {
 
-    protected val viewModelCoroutineScope = CoroutineScope(
-        Dispatchers.Main
-                + SupervisorJob()
-                + CoroutineExceptionHandler { _, throwable ->
-            handleError(throwable)
-        })
+    protected val viewModelCoroutineScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
     fun getStateLiveData(): LiveData<T> = stateLiveData
 
