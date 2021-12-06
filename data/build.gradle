@@ -18,4 +18,11 @@ dependencies {
 
     testImplementation Android.jUnit
     androidTestImplementation Android.testJUnit
+
+    testImplementation Mockito.core
+    testImplementation Mockito.inLine
+    testImplementation(Mockito.kotlin) {
+        exclude group: 'org.jetbrains.kotlin'
+        exclude group: 'org.mockito'
+    }
 }

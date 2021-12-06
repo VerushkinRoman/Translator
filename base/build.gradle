@@ -22,4 +22,18 @@ dependencies {
     implementation Koin.compat
 
     implementation BindingDelegate.core
+
+    testImplementation Android.jUnit
+    testImplementation Android.testing
+    androidTestImplementation Android.testJUnit
+
+    testImplementation Coroutines.test
+
+
+    testImplementation Mockito.core
+    testImplementation Mockito.inLine
+    testImplementation(Mockito.kotlin) {
+        exclude group: 'org.jetbrains.kotlin'
+        exclude group: 'org.mockito'
+    }
 }
