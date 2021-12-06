@@ -34,14 +34,9 @@ object Versions {
     const val appcompat = "1.3.1"
     const val material = "1.4.0"
     const val constraint = "2.1.1"
-    const val jUnit = "4.13"
+    const val jUnit = "4.12"
     const val testJUnit = "1.1.3"
     const val espresso = "3.4.0"
-    const val testing = "2.1.0"
-
-    const val mockitoCore = "4.1.0"
-    const val mockitoInline = "2.8.9"
-    const val mockitoKotlin = "4.0.0"
 
     const val binding = "1.5.0-beta01"
 }
@@ -54,7 +49,6 @@ object Android {
     const val jUnit = "junit:junit:${Versions.jUnit}"
     const val testJUnit = "androidx.test.ext:junit:${Versions.testJUnit}"
     const val espresso = "androidx.test.espresso:espresso-core:${Versions.espresso}"
-    const val testing = "androidx.arch.core:core-testing:${Versions.testing}"
 }
 
 object Retrofit {
@@ -67,7 +61,6 @@ object Retrofit {
 object Coroutines {
     const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines}"
     const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines}"
-    const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}"
 }
 
 object Room {
@@ -87,10 +80,4 @@ object Coil {
 
 object BindingDelegate{
     const val core = "com.github.kirich1409:viewbindingpropertydelegate-noreflection:${Versions.binding}"
-}
-
-object Mockito{
-    const val core = "org.mockito:mockito-core:${Versions.mockitoCore}"
-    const val inLine = "org.mockito:mockito-inline:${Versions.mockitoInline}"
-    const val kotlin = "org.mockito.kotlin:mockito-kotlin:${Versions.mockitoKotlin}"
 }
